@@ -31,10 +31,10 @@ public class Greedy_Allocation {
 
 //        players = new Bidder[5];
 //        players[0] = new Bidder("P1");
-//        players[0].setbid(63);
+//        players[0].setbid(54);
 //        players[0].setbundle("A,C,D");
 //        players[1] = new Bidder("P2");
-//        players[1].setbid(54);
+//        players[1].setbid(63);
 //        players[1].setbundle("A,B,C");
 //        players[2] = new Bidder("P3");
 //        players[2].setbid(93);
@@ -70,11 +70,17 @@ public class Greedy_Allocation {
 
         for(int i=0;i<players.length;i++){
             for(int j=0; j<winner.size();j++){
-                if(players[i].getname().equals(winner.get(j).getname())){
-                    for(int q = i+1;q<players.length;q++)
-                        if(!Bidder.disjointSet(players[i].getbundle(),players[q].getbundle())){
-                            players[i].setcritical(players[q].getbidPerNum()*players[i].getbundle().length);
-                            break;
+                boolean flag = true;
+                if(players[i].getname().equals(winner.get(j).getname())) {
+                    for (int q = i + 1; q < players.length; q++)
+                        if (players[q].getchecked() && !Bidder.disjointSet(players[i].getbundle(), players[q].getbundle())) {
+                            if (flag) {
+                                players[i].setcritical(players[q].getbidPerNum() * players[i].getbundle().length);
+                                players[q].setchecked();
+                                flag = false;
+                            } else {
+                                players[q].setchecked();
+                            }
                         }
                 }
                 else{
